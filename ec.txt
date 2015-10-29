@@ -1,0 +1,87 @@
+EC Strategy
+
+
+I had a little bit of experience playing Blackjack. So the first step is certainly the Basic Strategy. These are statiscally sound rules to lower house advantage. In a real-world scenario, the house advantage would be about 0.5 percent under this practice. But our program differs in the following ways:
+	a. No betting! As a result, we are no longer optimizing $$ winings, but % of games won.
+		i. Then there is also no double down, insurance and ect. 
+		ii. No surrender either.
+	b. No splitting. This will hurt our chances too under 2 10s scenario
+
+These differences will hurt our chances of beating the dealer, both in $$ term and in % chance term. Given the differences, we should first see how biased our current set up is (as it will be different from the real world).
+
+------------------------------------------------------------------------------------
+
+1. Use the same strategy as the computer/dealer (NOTE: this part is hardcoded in and removed after)
+
+Total rounds played: 100000
+Player has won: 40460
+Number of ties: 10135
+Computer has won: 49405
+Player winning %: 0.4046
+Computer winning %: 0.494
+
+The 9% difference is fairly large. Let's try to do better.
+
+------------------------------------------------------------------------------------
+
+2. Construct Basic Strategy!
+
+Intuitively, here is what the basic strategy is trying to acheive:
+
+------------------------------------------------------------------------------------
+
+	a. The player should be more conservative when the dealer is likely to go bust. 
+	b. Dealer is more likely to go bust with 2-6 as the first card, especially 4-6
+		i. This is because 6+10 = 16 -> must hit
+		ii. The hidden card has ~ 4/13 chance of being 10
+	c. The player should be more aggressive when the dealer has a high card (7-A)
+		i. Similar as before, it is likely the dealer has 17+
+		ii. Dealer is unlikely to bust
+		iii. The player should shoot for scores higher than 16
+	d. Ace gives flexibility:
+		i. Ace as 1 converts to above situations
+		ii. Ace as 11 again converst to above
+		iii. Find intersection to better understand decisions
+
+------------------------------------------------------------------------------------
+
+3. Formalize the Basic Strategy:
+
+------------------------------------------------------------------------------------
+
+if the player does not have an Ace:
+
+When dealer has 2-3: player hits with 4-12;
+When dealer has 4-6: player hits with 4-11;
+When dealer has 7-A: player hits with 4-16;
+
+BUT if the player has an Ace:
+
+When dealer has 2-8: player hits with 13-17;
+When dealer has 9-A: player hits with 13-18;
+
+------------------------------------------------------------------------------------
+
+4. Results
+
+Total rounds played: 10000
+Player has won: 4287
+Number of ties: 889
+Computer has won: 4824
+Player winning %: 0.4287
+Computer winning %: 0.4824
+
+Now the difference has shrunk to less than 6%. The Basic Strategy is expected to reduce the disadvantage. I was not expecting a much larger improvement as the disadvantage discussed in the first paragraph is substantial. 
+
+In addition, we need to note that many casinos have minor rule changes in their favor (esp. those around blackjack payoff and ties).
+
+5. Future improvement
+
+Another obvious approach would be counting cards and update every time a card is drawn. However, because we set up the game as:
+
+Start a new deck for every round of play (per Swap)
+
+My guess is that the effect of counting would not be big enough to move the needle. 
+
+
+
